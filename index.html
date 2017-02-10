@@ -13,14 +13,16 @@
     <div class="navbar-inner">
         <div class="container">
 
-            <div class="navbar-header"><a href="/" class="navbar-brand">GMAPI</a></div>
+            <div class="navbar-header"><a href="https://gnysek.github.io/gms-font-creator/" class="navbar-brand">GMS
+                Font Creator
+                <small>by gnysek</small>
+            </a></div>
 
             <div class="collapse navbar-collapse">
                 <ul id="main-menu-left" class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="https://twitter.com/GameMakerUpdate" target="_blank">Follow GM Updates bot on
+                    <li><a href="/" target="_blank">&raquo; My marketplace assets</a></li>
+                    <li><a href="https://twitter.com/GameMakerUpdate" target="_blank">&raquo; Follow GM Updates bot on
                         Twitter</a></li>
-                    <li><a href="http://psplusinfo.com/" target="_blank">PlayStation Plus Instant Games Collection</a>
                     </li>
                 </ul>
             </div>
@@ -94,7 +96,8 @@
     <canvas id=canvas width=1024 height=300 style="display: none;"></canvas>
 
     <br>
-    Result image:<br>
+    <strong>Result image:</strong><br>
+    (Right click, save on disk and later import as strip in GMS 1 or 2).
     <img src="" id="img" style="background-image: url('transp.png');">
 </div>
 <script>
@@ -138,7 +141,7 @@
         if (strokeText) {
             w += context.lineWidth;
             h += context.lineWidth;
-            y = Math.ceil(context.lineWidth/2);
+            y = Math.ceil(context.lineWidth / 2);
         }
         x = Math.ceil(w / 2) + 1;
 
