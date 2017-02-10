@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GMStudio font creator by gnysek</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="padding-top: 70px;">
+
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+            <div class="navbar-header"><a href="/" class="navbar-brand">GMAPI</a></div>
+
+            <div class="collapse navbar-collapse">
+                <ul id="main-menu-left" class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="https://twitter.com/GameMakerUpdate" target="_blank">Follow GM Updates bot on
+                        Twitter</a></li>
+                    <li><a href="http://psplusinfo.com/" target="_blank">PlayStation Plus Instant Games Collection</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label>Font-family:</label><br/>
+                    <small style="vertical-align: top;">
+                        <kbd onclick="$('#font').val('Arial'); $('button').click();"
+                             style="cursor: pointer;">Arial</kbd>
+                        <kbd onclick="$('#font').val('Verdana'); $('button').click();"
+                             style="cursor: pointer;">Verdana</kbd>
+                        <kbd onclick="$('#font').val('Roboto'); $('button').click();"
+                             style="cursor: pointer;">Roboto</kbd>
+                        <kbd onclick="$('#font').val('Times New Roman'); $('button').click();" style="cursor: pointer;">Times
+                            New Roman</kbd>
+                        <kbd onclick="$('#font').val('Consolas'); $('button').click();" style="cursor: pointer;">Consolas</kbd>
+                    </small>
+                    <input class="form-control" type="text" id="font" value="Roboto">
+                    <small>(Must be installed on your PC - <kbd>C:\Windows\Fonts</kbd>)</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Font-size:</label><br/>
+                    <small style="vertical-align: top;">
+                        <kbd onclick="$('#size').val('10px'); $('button').click();"
+                             style="cursor: pointer;">10px</kbd>
+                        <kbd onclick="$('#size').val('20px'); $('button').click();"
+                             style="cursor: pointer;">20px</kbd>
+                        <kbd onclick="$('#size').val('30px'); $('button').click();"
+                             style="cursor: pointer;">30px</kbd>
+                        <kbd onclick="$('#size').val('40px'); $('button').click();"
+                             style="cursor: pointer;">40px</kbd>
+                    </small>
+                    <input class="form-control" type="text" id="size" value="40px">
+                    <small>(Can be in <kbd>px</kbd> or <kbd>pt</kbd>)</small>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="render();">Apply</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label>Letters:</label>
+                <textarea class="form-control" style="font-family: Consolas, monospace;">!" $%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^+`abcdefghijklmnopqrstuvwxyz{|}~€ąćęłńóśżźĄĆĘŁŃÓŚŻŹ</textarea>
+                <small>(don't forget about including space ;) )</small>
+            </div>
+            <div class="form-group">
+                <label>Stroke</label>
+                <input type="checkbox" id="stroke" onclick="render();">
+                <input type="text" id="stroke-size" value="3"> (without px)
+            </div>
+        </div>
+    </div>
+
+    <div>
+        Tile width <span id="t-width"></span>px.
+        Tile height <span id="t-height"></span>px.
+        Total tiles in row <span id="t-total-row"></span>.
+        Total tiles <span id="t-total"></span>.
+    </div>
+
+    <canvas id=canvas width=1024 height=300 style="display: none;"></canvas>
+
+    <br>
+    Result image:<br>
+    <img src="" id="img" style="background-image: url('transp.png');">
+</div>
+<script>
+
+    window.onload = function () {
+        render();
+    };
+
+    render = function () {
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        //context.fillStyle = "green";
+        //context.fillRect(50, 50, 100, 100);
+
+        var str = "!\" $%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^+`abcdefghijklmnopqrstuvwxyz{|}~€ąćęłńóśżźĄĆĘŁŃÓŚŻŹ";
+        context.font = $('#size').val() + ' ' + $('#font').val();//'40px Roboto';
+        context.fillStyle = 'white';
+        context.textBaseline = 'top';
+        context.textAlign = 'center';
+
+        var strokeText = $('#stroke').is(':checked');
+
+        if (strokeText) {
+            context.lineWidth = parseInt($('#stroke-size').val() | 0) * 2;
+            context.strokeStyle = 'black';
+            context.miterLimit = 2;
+        }
+
+        var w = 0, h, x, y = 0;
+        for (var i = 0; i < str.length; i++) {
+            w = Math.max(w, context.measureText(str.charAt(i)).width);
+        }
+        w = Math.ceil(w) + 2;
+
+        var _h = getTextHeight(context.font);
+        h = Math.ceil(_h.height) + 2;
+
+        var hh = 0, ww = 0;
+
+        if (strokeText) {
+            w += context.lineWidth;
+            h += context.lineWidth;
+            y = Math.ceil(context.lineWidth/2);
+        }
+        x = Math.ceil(w / 2) + 1;
+
+        for (var i = 0; i < str.length; i++) {
+
+            if (strokeText) {
+                context.strokeText(str.charAt(i), ww + x, hh + 1 + y)
+            }
+            context.fillText(str.charAt(i), ww + x, hh + 1 + y);
+
+            ww += w;
+            if (ww > 1024 - w) {
+                ww = 0;
+                hh += h;
+            }
+        }
+
+        $('#t-width').text(w);
+        $('#t-height').text(h);
+        $('#t-total-row').text(Math.floor(canvas.width / w));
+        $('#t-total').text(str.length);
+
+        // no argument defaults to image/png; image/jpeg, etc also work on some
+        // implementations -- image/png is the only one that must be supported per spec.
+        //window.location = canvas.toDataURL("image/png");
+        document.getElementById("img").src = canvas.toDataURL("image/png");
+    }
+
+    var getTextHeight = function (font) {
+
+        console.log(font);
+        var text = $('<span>Hg</span>').css({font: font});
+        var block = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
+
+        var div = $('<div></div>');
+        div.append(text, block);
+
+        var body = $('body');
+        body.append(div);
+
+        try {
+
+            var result = {};
+
+            block.css({verticalAlign: 'baseline'});
+            result.ascent = block.offset().top - text.offset().top;
+
+            block.css({verticalAlign: 'bottom'});
+            result.height = block.offset().top - text.offset().top;
+
+            result.descent = result.height - result.ascent;
+
+        } finally {
+            div.remove();
+        }
+
+        return result;
+    };
+
+    var testLine = function (ctx, x, y, len, style) {
+        ctx.strokeStyle = style;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + len, y);
+        ctx.closePath();
+        ctx.stroke();
+    };
+</script>
+
+</body>
+</html>
