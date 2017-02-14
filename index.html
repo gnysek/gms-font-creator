@@ -93,10 +93,12 @@
 
     <div class="row">
         <div class="col-sm-12">
-            Total tiles <kbd><span id="t-total"></span></kbd>.
-            Total tiles in row <kbd><span id="t-total-row"></span></kbd>.
-            Tile width <kbd><span id="t-width"></span>px</kbd>.
-            Tile height <kbd><span id="t-height"></span>px</kbd>.
+            Number of frames <kbd><span id="t-total"></span></kbd>.
+            Frames per row <kbd><span id="t-total-row"></span></kbd>.
+            Frame width <kbd><span id="t-width"></span>px</kbd>.
+            Frame height <kbd><span id="t-height"></span>px</kbd>.<br/>
+            Image width <kbd><span id="t-img-width"></span>px</kbd>.
+            Image height <kbd><span id="t-img-height"></span>px</kbd>.
         </div>
     </div>
 
@@ -188,8 +190,10 @@
 
         $('#t-width').text(w);
         $('#t-height').text(h);
-        $('#t-total-row').text(Math.floor(canvas.width / w));
+        $('#t-total-row').text(25);
         $('#t-total').text(str.length);
+        $('#t-img-width').text(canvas.width);
+        $('#t-img-height').text(canvas.height);
 
         // no argument defaults to image/png; image/jpeg, etc also work on some
         // implementations -- image/png is the only one that must be supported per spec.
