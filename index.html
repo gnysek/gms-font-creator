@@ -4,6 +4,41 @@
     <meta charset="utf-8">
     <title>GMStudio font creator by gnysek</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .bg-transp {
+            background-image: url('transp.png');
+        }
+
+        .bg-gray {
+            background: #666;
+        }
+
+        .z100 {
+            height: 100%;
+        }
+
+        .z200 {
+            height: 200%;
+        }
+
+        .z400 {
+            height: 400%;
+        }
+
+        a, kbd {
+            cursor: pointer;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -30,90 +65,137 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label>Font-family:</label><br/>
-                    <small style="vertical-align: top;">
-                        <kbd onclick="$('#font').val('Arial'); $('button').click();"
-                             style="cursor: pointer;">Arial</kbd>
-                        <kbd onclick="$('#font').val('Verdana'); $('button').click();"
-                             style="cursor: pointer;">Verdana</kbd>
-                        <kbd onclick="$('#font').val('Roboto'); $('button').click();"
-                             style="cursor: pointer;">Roboto</kbd>
-                        <kbd onclick="$('#font').val('Times New Roman'); $('button').click();" style="cursor: pointer;">Times
-                            New Roman</kbd>
-                        <kbd onclick="$('#font').val('Consolas'); $('button').click();" style="cursor: pointer;">Consolas</kbd>
-                    </small>
-                    <input class="form-control" type="text" id="font" value="Roboto">
-                    <small>(Must be installed on your PC - <kbd>C:\Windows\Fonts</kbd>)</small>
-                </div>
+<form>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label>Font-family:</label><br/>
+                        <small style="vertical-align: top;">
+                            <kbd onclick="$('#font').val('Arial'); $('button').click();">Arial</kbd>
+                            <kbd onclick="$('#font').val('Verdana'); $('button').click();">Verdana</kbd>
+                            <kbd onclick="$('#font').val('Roboto'); $('button').click();">Roboto</kbd>
+                            <kbd onclick="$('#font').val('Times New Roman'); $('button').click();">Times New Roman</kbd>
+                            <kbd onclick="$('#font').val('Consolas'); $('button').click();">Consolas</kbd>
+                        </small>
+                        <input class="form-control update" type="text" id="font" value="Roboto">
+                        <small>(Must be installed on your PC - <code>C:\Windows\Fonts</code>)</small>
+                    </div>
 
-                <div class="form-group">
-                    <label>Font-size:</label><br/>
-                    <small style="vertical-align: top;">
-                        <kbd onclick="$('#size').val('10px'); $('button').click();"
-                             style="cursor: pointer;">10px</kbd>
-                        <kbd onclick="$('#size').val('20px'); $('button').click();"
-                             style="cursor: pointer;">20px</kbd>
-                        <kbd onclick="$('#size').val('30px'); $('button').click();"
-                             style="cursor: pointer;">30px</kbd>
-                        <kbd onclick="$('#size').val('40px'); $('button').click();"
-                             style="cursor: pointer;">40px</kbd>
-                    </small>
-                    <input class="form-control" type="text" id="size" value="40px">
-                    <small>(Can be in <kbd>px</kbd> or <kbd>pt</kbd>)</small>
-                </div>
+                    <div class="form-group">
+                        <label>Font-size:</label><br/>
+                        <small style="vertical-align: top;">
+                            <kbd onclick="$('#size').val('10px'); $('button').click();"
+                                 style="cursor: pointer;">10px</kbd>
+                            <kbd onclick="$('#size').val('20px'); $('button').click();"
+                                 style="cursor: pointer;">20px</kbd>
+                            <kbd onclick="$('#size').val('30px'); $('button').click();"
+                                 style="cursor: pointer;">30px</kbd>
+                            <kbd onclick="$('#size').val('40px'); $('button').click();"
+                                 style="cursor: pointer;">40px</kbd>
+                        </small>
+                        <input class="form-control update" type="text" id="size" value="40px">
+                        <small>(Can be in <kbd>px</kbd> or <kbd>pt</kbd>)</small>
+                    </div>
 
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" onclick="render();">Apply</button>
+                        <button type="reset" class="btn btn-primary" onclick="render();">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="render();">Apply</button>
+                    <label>Letters:</label><br>
+                    <small style="vertical-align: top;">
+                        <kbd onclick="$('#letters').val('!&quot; $%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^+`abcdefghijklmnopqrstuvwxyz{|}~'); render();">English/Latin</kbd>
+                        <kbd onclick="$('#letters').val(' 0123456789'); render();">Digits</kbd>
+                        <kbd onclick="$('#letters').val('!&quot; $%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^+`abcdefghijklmnopqrstuvwxyz{|}~€ąćęłńóśżźĄĆĘŁŃÓŚŻŹ'); render();">Polish</kbd>
+                    </small>
+                    <textarea class="form-control" style="font-family: Consolas, monospace; word-break: break-all;" id="letters">!" $%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^+`abcdefghijklmnopqrstuvwxyz{|}~€ąćęłńóśżźĄĆĘŁŃÓŚŻŹ</textarea>
+                    <small>(don't forget about including space ;) )</small>
+                </div>
+                <div class="form-group">
+                    <label>Stroke</label>
+                    <input type="checkbox" id="stroke" onclick="render();">
+                    <input type="text" id="stroke-size" value="3" class="update"> (without px)
+                </div>
+                <div class="form-group">
+                    <label>Hspace</label>
+                    <input type="text" id="hspace" value="0" class="update">
                 </div>
             </div>
         </div>
-        <div class="col-sm-8">
-            <div class="form-group">
-                <label>Letters:</label>
-                <textarea class="form-control" style="font-family: Consolas, monospace;" id="letters">!" $%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^+`abcdefghijklmnopqrstuvwxyz{|}~€ąćęłńóśżźĄĆĘŁŃÓŚŻŹ</textarea>
-                <small>(don't forget about including space ;) )</small>
+
+        <div class="row">
+            <div class="col-sm-12">
+                Number of frames <kbd><span id="t-total"></span></kbd>.
+                Frame width <kbd><span id="t-width"></span>px</kbd>.
+                Frame height <kbd><span id="t-height"></span>px</kbd>.<br/>
+                Image width <kbd><span id="t-img-width"></span>px</kbd>.
+                Image height <kbd><span id="t-img-height"></span>px</kbd>.
             </div>
-            <div class="form-group">
-                <label>Stroke</label>
-                <input type="checkbox" id="stroke" onclick="render();">
-                <input type="text" id="stroke-size" value="3"> (without px)
-            </div>
-            <div class="form-group">
-                <label>Hspace / Vspace</label>
-                <input type="text" id="hspace" value="1">
-                <input type="text" id="vspace" value="1">
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <canvas id="canvas" width="1024" height="300" style="display: none;"></canvas>
+
+                <br>
+                <strong>Result image:</strong>
+
+                <div class="pull-right">
+                    <a onclick="zoom = 1; render();">100%</a>
+                    <a onclick="zoom = 2; render();">200%</a>
+                    <a onclick="zoom = 4; render();">400%</a>
+                </div>
+
+                <br>
+                (Right click, save on disk and later import as strip in GMS 1 or 2). Space will be rendered as
+                <code>_</code> so GM will render it's width<br>
+                <div style="max-width: 100%; overflow-x: auto; overflow-y: auto;">
+                    <img src="" id="img" class="bg-transp">
+                </div>
+
+                <strong>Options</strong>
+                <div>
+                    <small>Background for preview (image is still transparent):</small>
+                    <br>
+                    <label>
+                        <input type="radio" name="bg" checked onclick="$('#img').removeClass('bg-gray').addClass('bg-transp');">
+                        Transparent</label>
+                    <label>
+                        <input type="radio" name="bg" onclick="$('#img').removeClass('bg-transp').addClass('bg-gray');">
+                        Solid</label>
+                </div>
+                <br>
+                <small>[DEBUG] Show text baselines</small>
+                <br>
+                <label><input type="radio" name="basel" checked onclick="show_baselines = false; render();">No</label>
+                <label><input type="radio" name="basel" onclick="show_baselines = true; render();">Yes</label><br>
+                <br>
+                <small>[DEBUG] Show frame edges</small>
+                <br>
+                <label><input type="radio" name="rect" checked onclick="show_rectangle = false; render();">No</label>
+                <label><input type="radio" name="rect" onclick="show_rectangle = true; render();">Yes</label>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            Number of frames <kbd><span id="t-total"></span></kbd>.
-            Frames per row <kbd><span id="t-total-row"></span></kbd>.
-            Frame width <kbd><span id="t-width"></span>px</kbd>.
-            Frame height <kbd><span id="t-height"></span>px</kbd>.<br/>
-            Image width <kbd><span id="t-img-width"></span>px</kbd>.
-            Image height <kbd><span id="t-img-height"></span>px</kbd>.
-        </div>
-    </div>
-
-    <canvas id=canvas width=1024 height=300 style="display: none;"></canvas>
-
-    <br>
-    <strong>Result image:</strong><br>
-    (Right click, save on disk and later import as strip in GMS 1 or 2).<br>
-    <img src="" id="img" style="background-image: url('transp.png');">
-</div>
+</form>
 <script>
 
     window.onload = function () {
         render();
+        $('.update').on('change', function () {
+            render();
+        });
     };
+
+    var show_baselines = false;
+    var show_rectangle = false;
+    var zoom = 1;
 
     render = function () {
         var canvas = document.getElementById("canvas");
@@ -123,10 +205,9 @@
         //context.fillRect(50, 50, 100, 100);
 
         var hspace = parseInt($('#hspace').val()) | 0;
-        var vspace = parseInt($('#vspace').val()) | 0;
         var strokeWidth = parseInt($('#stroke-size').val() | 0);
         var strokeText = $('#stroke').is(':checked');
-        var str = $('#letters').val();
+        var str = $('#letters').val(); // letters in input
 
         context.font = $('#size').val() + ' ' + $('#font').val();
         context.textBaseline = 'top';
@@ -141,8 +222,8 @@
         var _h = getTextHeight(context.font);
         h = Math.ceil(_h.height + (_h.height - _h.ascent)) + 2;
 
-        canvas.width = 25 * (w + hspace + (strokeText ? strokeWidth : 0));
-        canvas.height = Math.ceil(str.length / 25) * (h + vspace + (strokeText ? strokeWidth : 0)) + 2;
+        canvas.width = str.length * (w + hspace + (strokeText ? strokeWidth : 0));
+        canvas.height = (h + (strokeText ? strokeWidth : 0));
 
         context.font = $('#size').val() + ' ' + $('#font').val();
         context.fillStyle = 'white';
@@ -155,9 +236,11 @@
             context.miterLimit = 2;
         }
 
-        //testLine(context, 0, _h.descent, canvas.width, 'red');
-        //testLine(context, 0, _h.ascent, canvas.width, 'green');
-        //testLine(context, 0, _h.height, canvas.width, 'blue');
+        if (show_baselines) {
+            testLine(context, 0, _h.descent, canvas.width, 'red');
+            testLine(context, 0, _h.ascent, canvas.width, 'green');
+            testLine(context, 0, _h.height, canvas.width, 'blue');
+        }
 
         context.strokeStyle = 'black';
 
@@ -179,21 +262,25 @@
             context.fillText(str.charAt(i) == ' ' ? '_' : str.charAt(i), ww + x, hh + 1 + y + _h.descent);
 
             context.lineWidth = 1;
-            //context.strokeRect(ww, hh, w + hspace, h);
+
+            if (show_rectangle) {
+                context.strokeRect(ww, hh, w - 1, h);
+            }
 
             ww += w + hspace;
-            if (i % 25 == 24) {
-                ww = 0;
-                hh += h + vspace;
-            }
+//            if (i % 25 == 24) {
+//                ww = 0;
+//                hh += h;
+//            }
         }
 
         $('#t-width').text(w);
         $('#t-height').text(h);
-        $('#t-total-row').text(25);
         $('#t-total').text(str.length);
         $('#t-img-width').text(canvas.width);
         $('#t-img-height').text(canvas.height);
+
+        $('#img').css({'height': canvas.height * zoom + 'px'});
 
         // no argument defaults to image/png; image/jpeg, etc also work on some
         // implementations -- image/png is the only one that must be supported per spec.
