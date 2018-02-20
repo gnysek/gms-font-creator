@@ -80,7 +80,9 @@
                             <kbd onclick="$('#font').val('Consolas'); $('button').click();">Consolas</kbd>
                         </small>
                         <input class="form-control update" type="text" id="font" value="Roboto">
-                        <small>(Must be installed on your PC - <code>C:\Windows\Fonts</code>)</small>
+                        <small>(Must be installed on your PC - <code>C:\Windows\Fonts</code>)</small><br>
+                        <label><input type="checkbox" name="bold" id="bold" class="update"> Bold</label>
+                        <label><input type="checkbox" name="italic" id="italic" class="update"> Italic</label>
                     </div>
 
                     <div class="form-group">
@@ -225,7 +227,10 @@
         canvas.width = str.length * (w + hspace + (strokeText ? strokeWidth : 0));
         canvas.height = (h + (strokeText ? strokeWidth : 0));
 
-        context.font = $('#size').val() + ' ' + $('#font').val();
+        var bold = $('#bold').is(':checked') ? 'bold ' : '';
+        var italic = $('#italic').is(':checked') ? 'italic ' : '';
+
+        context.font = bold + italic + $('#size').val() + ' ' + $('#font').val();
         context.fillStyle = 'white';
         context.textBaseline = 'top';
         context.textAlign = 'center';
